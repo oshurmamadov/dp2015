@@ -31,7 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import driver.com.driverapp.utils.CallBack;
 import driver.com.driverapp.utils.DataController;
+import driver.com.driverapp.utils.SaveSharedPrefrances;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -62,13 +64,32 @@ public class MainActivity extends ActionBarActivity {
            @Override
            public void onClick(View v) {
             //   dc.loginRequest();
-               dc.monitoring(dc._latitude,dc._longitude);
-               updateNotification();
+               dc.monitoring(dc._latitude,dc._longitude,
+                       new CallBack() {
+                           @Override
+                           public void process(String o) {
+                               updateNotification();
+                           }
+                       },
+                        new CallBack() {
+                            @Override
+                            public void process(String o) {
+                                Toast toast3 = Toast.makeText(getApplicationContext(), "Pizda Staus :" + dc.status, Toast.LENGTH_SHORT);
+                                toast3.show();
+                            }
+                        });
+
            }
        });
 
+        if(dc.enterByMain == true) getDataFromServer();
+
+        //driver_full_name.setText(SaveSharedPrefrances.getNumber(MainActivity.this));
+        //cab_number.setText("cub number :"+SaveSharedPrefrances.getPassword(MainActivity.this));
+
         driver_full_name.setText(dc.driverFullName);
         cab_number.setText("cub number :"+dc.cabNumber);
+
 
         try {
                 setUpMap();
@@ -78,6 +99,27 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void getDataFromServer(){
+
+        dc.loginRequest(SaveSharedPrefrances.getNumber(MainActivity.this),
+                SaveSharedPrefrances.getPassword(MainActivity.this),
+                new CallBack() {
+                    @Override
+                    public void process(String o) {
+
+                        driver_full_name.setText(dc.driverFullName);
+                        cab_number.setText("cub number :"+dc.cabNumber);
+                    }
+                },
+                new CallBack() {
+                    @Override
+                    public void process(String o) {
+                        Toast toast3 = Toast.makeText(getApplicationContext(), "Pizda Staus :" + dc.status, Toast.LENGTH_SHORT);
+                        toast3.show();
+                    }
+                }
+        );
+    }
 
     private void updateNotification(){
         if(dc.saveStatus !=null){

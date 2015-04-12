@@ -50,7 +50,7 @@ public class DataController {
         return instance;
     }
 
-    public void loginRequest(String phoneNumber, String driverPassword) {
+    public void loginRequest(String phoneNumber, String driverPassword , final CallBack success, final CallBack failure) {
 
         String url = "http://serverdp.herokuapp.com/login?phone_number="+phoneNumber+"&password="+driverPassword;
         requestServer(url,
@@ -77,19 +77,19 @@ public class DataController {
                                 Log.e("Jush", "Catched JSONException. result was: " + o);
                             }
                         }
-                        //success.process(o);
+                        success.process(o);
                     }
                 },
                 new CallBack() {
                     @Override
                     public void process(String o) {
-                        //   failure.process(null);
+                          failure.process(null);
                     }
                 }
         );
     }
 
-    public void monitoring(double latitude , double longitude){
+    public void monitoring(double latitude , double longitude , final CallBack success, final CallBack failure){
 
         String url = "http://serverdp.herokuapp.com/save_data?lat="+latitude+"&lng="+longitude+"&cab_number="+cabNumber;
         requestServer(url,
@@ -110,13 +110,13 @@ public class DataController {
                                 Log.e("Jush", "Catched JSONException. result was: " + o);
                             }
                         }
-                        //success.process(o);
+                        success.process(o);
                     }
                 },
                 new CallBack() {
                     @Override
                     public void process(String o) {
-                        //   failure.process(null);
+                           failure.process(null);
                     }
                 }
         );

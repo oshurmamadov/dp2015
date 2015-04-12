@@ -34,6 +34,8 @@ public class SplashActivity extends ActionBarActivity {
                 public void run()
                 {
                     dc.enterByLogin = true;
+                    dc.enterByMain = false;
+
                     startActivity(loginIntent);
                     finish();
                 }
@@ -45,6 +47,8 @@ public class SplashActivity extends ActionBarActivity {
                 public void run()
                 {
                     dc.enterByMain = true;
+                    dc.enterByLogin = false;
+
                     startActivity(mainIntent);
                     finish();
                 }

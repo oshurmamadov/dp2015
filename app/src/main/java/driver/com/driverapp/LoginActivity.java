@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
+import driver.com.driverapp.utils.CallBack;
 import driver.com.driverapp.utils.DataController;
 import driver.com.driverapp.utils.SaveSharedPrefrances;
 
@@ -31,7 +32,7 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        dc = DataController.getInstance(getApplicationContext());
+        dc = DataController.getInstance(this);
         aq = new AQuery(getApplicationContext());
 
         number = (EditText)findViewById(R.id.number_field);
@@ -45,8 +46,24 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v)
             {
                 //dc.loginRequest(number.getText().toString(),password.getText().toString());
-                dc.loginRequest(SaveSharedPrefrances.getNumber(LoginActivity.this),SaveSharedPrefrances.getPassword(LoginActivity.this));
-                beginTracking();
+                dc.loginRequest(SaveSharedPrefrances.getNumber(LoginActivity.this),
+                                SaveSharedPrefrances.getPassword(LoginActivity.this),
+                                new CallBack() {
+                                    @Override
+                                    public void process(String o) {
+                                        beginTracking();
+                                    }
+                                },
+                                new CallBack() {
+                                    @Override
+                                    public void process(String o) {
+                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Pizda Staus :" + dc.status, Toast.LENGTH_SHORT);
+                                        toast3.show();
+                                    }
+                                }
+                                );
+
+
             }
         });
     }
@@ -58,6 +75,8 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void beginTracking(){
+
+
 
         if(dc.status != null)
         {
@@ -71,8 +90,8 @@ public class LoginActivity extends ActionBarActivity {
                 finish();
             } else
             {
-                Toast toast = Toast.makeText(getApplicationContext(), "Idi nakhuy :" + dc.status, Toast.LENGTH_SHORT);
-                toast.show();
+               // Toast toast = Toast.makeText(getApplicationContext(), "Idi nakhuy :" + dc.status, Toast.LENGTH_SHORT);
+               // toast.show();
             }
         }
     }
