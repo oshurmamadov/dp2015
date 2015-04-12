@@ -36,11 +36,7 @@ import driver.com.driverapp.utils.DataController;
 public class MainActivity extends ActionBarActivity {
 
     private GoogleMap gMap;
-    private double lang  = 0.0;
-    private double lat  = 0.0;
     private AQuery aq;
-    JSONObject login;
-    String status;
     Button but;
     private DataController dc;
 
@@ -65,101 +61,58 @@ public class MainActivity extends ActionBarActivity {
        but.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               dc.loginRequest();
-               driver_full_name.setText(dc.driverFullName);
-               cab_number.setText("cub number :"+dc.cabNumber);
+            //   dc.loginRequest();
+               dc.monitoring(dc._latitude,dc._longitude);
+               updateNotification();
            }
        });
 
+        driver_full_name.setText(dc.driverFullName);
+        cab_number.setText("cub number :"+dc.cabNumber);
+
         try {
-            setUpMap();
+                setUpMap();
         }
         catch(Exception e){
-           e.printStackTrace();
+                 e.printStackTrace();
         }
     }
 
+
+    private void updateNotification(){
+        if(dc.saveStatus !=null){
+            String flag = "saved";
+            if(dc.saveStatus.equals(flag)){
+                Toast toast = Toast.makeText(getApplicationContext(),"The data was saved",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else{
+                Toast toast = Toast.makeText(getApplicationContext(),"Fail ! The data was not saved",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    }
 
     private void setUpMap(){
        if(gMap == null) {
 
             gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment)).getMap();
             gMap.setMyLocationEnabled(true);
-            //gMap.getMaxZoomLevel(0.3);
             gMap.getUiSettings().setMyLocationButtonEnabled(false);
 
             gMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                 @Override
                 public void onMyLocationChange(Location location) {
+
+                    dc._latitude = location.getLatitude();
+                    dc._longitude = location.getLongitude();
+
                     gMap.clear();
                     gMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("You are here!").snippet("Consider yourself located"));
                     gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),12.0f ) );
+
                 }
             });
-
-       //     gMap.getMyLocation();
-
-          //  Log.e("Jush", "Jush" + String.valueOf(gMap.getMyLocation().getLatitude()));
-          //  gMap.addMarker(new MarkerOptions().position(new LatLng(44, 66)).title("Marker"));
-
-           /* GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-                @Override
-                public void onMyLocationChange(Location location) {
-                    LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-
-                    lang = location.getLongitude();
-                    lat = location.getLatitude();
-
-                    gMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(),location.getLongitude())).title("Marker"));
-                   // gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-                }
-            };
-
-            gMap.setOnMyLocationChangeListener(myLocationChangeListener);
-
-            Log.e("Jush", "Jush" + String.valueOf(lang));
-            Log.e("Jush", "Jush" + String.valueOf(lat));*/
-
-
-
-            // Get LocationManager object from System Service LOCATION_SERVICE
-           /* LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            // Create a criteria object to retrieve provider
-            Criteria criteria = new Criteria();
-
-            // Get the name of the best provider
-            String provider = locationManager.getBestProvider(criteria, true);
-
-            // Get Current Location
-            Location myLocation = locationManager.getLastKnownLocation(provider);
-
-            // set map type
-           // gMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-            // Get latitude of the current location
-            double latitude = myLocation.getLatitude();
-
-            // Get longitude of the current location
-            double longitude = myLocation.getLongitude();
-
-            // Create a LatLng object for the current location
-            LatLng latLng = new LatLng(latitude, longitude);*/
-
-            // Show the current location in Google Map
-           // gMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-            // Zoom in the Google Map
-          //  gMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-
-
-
-
-        //    Log.e("Jush", "Jush" + String.valueOf(loc.getLatitude()));
-         //   Log.e("Jush", "Jush" + String.valueOf(loc.getLongitude()));
-
-
-
 
        }
     }
@@ -169,33 +122,6 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         setUpMap();
     }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-
-
 
 
 }

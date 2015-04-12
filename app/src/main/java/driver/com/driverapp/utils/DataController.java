@@ -26,10 +26,16 @@ public class DataController {
     public SharedPreferences preferences;
     private AQuery aq;
     public JSONObject loginJSon;
-    public  String status;
+    public JSONObject saveJSon;
+    public String status;
+    public String saveStatus;
     public String driverFullName ;
     public String cabNumber;
 
+    public double _latitude = 0.0;
+    public double _longitude = 0.0;
+
+    public boolean enterByLogin = false , enterByMain = false;
     private  DataController(Context context){
 
         this.context = context;
@@ -44,9 +50,9 @@ public class DataController {
         return instance;
     }
 
-    public void loginRequest() {
+    public void loginRequest(String phoneNumber, String driverPassword) {
 
-        String url = "http://serverdp.herokuapp.com/login?phone_number=0557234539&password=test1000";
+        String url = "http://serverdp.herokuapp.com/login?phone_number="+phoneNumber+"&password="+driverPassword;
         requestServer(url,
                 new CallBack() {
                     @Override
@@ -54,29 +60,51 @@ public class DataController {
                         if(!o.equals("")) {
                             //Log.e("Jush", "Callback 4");
                             try {
-                                // JSONArray object = new JSONArray(o);
 
                                 loginJSon = new JSONObject(o.toString());
 
-                                   /* if(song.getString("streamable").equals("true"))items.add(new SongItem(
-                                            song.getString("title"),
-                                            song.getString("uri"),
-                                            context,
-                                            song.getString("artwork_url"),
-                                            //song.getJSONObject("user").getString("avatar_url"),
-                                            song.getString("permalink_url"),
-                                            song.getJSONObject("user").getString("username"),
-                                            song.getJSONObject("user").getString("permalink_url")
-
-                                    ));*/
-                                status = loginJSon.getString("status");
+                                status         = loginJSon.getString("status");
                                 driverFullName = loginJSon.getString("driver_full_name");
-                                cabNumber = loginJSon.getString("cab_number");
+                                cabNumber      = loginJSon.getString("cab_number");
+
                                 Log.e("Jush",status);
                                 Log.e("Jush",loginJSon.getString("cab_number"));
                                 Log.e("Jush",loginJSon.getString("driver_full_name"));
 
 
+
+                            } catch (JSONException e) {
+                                Log.e("Jush", "Catched JSONException. result was: " + o);
+                            }
+                        }
+                        //success.process(o);
+                    }
+                },
+                new CallBack() {
+                    @Override
+                    public void process(String o) {
+                        //   failure.process(null);
+                    }
+                }
+        );
+    }
+
+    public void monitoring(double latitude , double longitude){
+
+        String url = "http://serverdp.herokuapp.com/save_data?lat="+latitude+"&lng="+longitude+"&cab_number="+cabNumber;
+        requestServer(url,
+                new CallBack() {
+                    @Override
+                    public void process(String o) {
+                        if(!o.equals("")) {
+                            //Log.e("Jush", "Callback 4");
+                            try {
+
+                                saveJSon = new JSONObject(o.toString());
+
+                                saveStatus  = saveJSon.getString("status");
+
+                                Log.e("Jush",saveStatus);
 
                             } catch (JSONException e) {
                                 Log.e("Jush", "Catched JSONException. result was: " + o);
