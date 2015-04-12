@@ -39,7 +39,7 @@ public class SplashActivity extends ActionBarActivity {
                     startActivity(loginIntent);
                     finish();
                 }
-            }, 1000);
+            }, 2000);
         }
         else {
             new Handler().postDelayed(new Runnable() {
@@ -52,7 +52,7 @@ public class SplashActivity extends ActionBarActivity {
                     startActivity(mainIntent);
                     finish();
                 }
-            }, 1000);
+            }, 1);
         }
 
     }

@@ -52,7 +52,7 @@ public class DataController {
 
     public void loginRequest(String phoneNumber, String driverPassword , final CallBack success, final CallBack failure) {
 
-        String url = "http://serverdp.herokuapp.com/login?phone_number="+phoneNumber+"&password="+driverPassword;
+        String url = String.format("http://serverdp.herokuapp.com/login?phone_number=%s&password=%s",phoneNumber,driverPassword);
         requestServer(url,
                 new CallBack() {
                     @Override
@@ -91,7 +91,7 @@ public class DataController {
 
     public void monitoring(double latitude , double longitude , final CallBack success, final CallBack failure){
 
-        String url = "http://serverdp.herokuapp.com/save_data?lat="+latitude+"&lng="+longitude+"&cab_number="+cabNumber;
+        String url = String.format("http://serverdp.herokuapp.com/save_data?lat=%s&lng=%s&cab_number=%s",latitude,longitude,cabNumber);
         requestServer(url,
                 new CallBack() {
                     @Override

@@ -39,13 +39,14 @@ public class LoginActivity extends ActionBarActivity {
         password = (EditText) findViewById(R.id.password_field);
         connectBtn = (Button) findViewById(R.id.connectBtn);
 
-        saveData();
+
 
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 //dc.loginRequest(number.getText().toString(),password.getText().toString());
+                saveData();
                 dc.loginRequest(SaveSharedPrefrances.getNumber(LoginActivity.this),
                                 SaveSharedPrefrances.getPassword(LoginActivity.this),
                                 new CallBack() {
@@ -57,7 +58,7 @@ public class LoginActivity extends ActionBarActivity {
                                 new CallBack() {
                                     @Override
                                     public void process(String o) {
-                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Pizda Staus :" + dc.status, Toast.LENGTH_SHORT);
+                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
                                         toast3.show();
                                     }
                                 }
@@ -90,8 +91,8 @@ public class LoginActivity extends ActionBarActivity {
                 finish();
             } else
             {
-               // Toast toast = Toast.makeText(getApplicationContext(), "Idi nakhuy :" + dc.status, Toast.LENGTH_SHORT);
-               // toast.show();
+                Toast toast = Toast.makeText(getApplicationContext(), "Error :" + dc.status, Toast.LENGTH_SHORT);
+                toast.show();
             }
         }
     }

@@ -1,9 +1,12 @@
 package driver.com.driverapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Handler;
 import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -30,6 +33,13 @@ import com.androidquery.callback.AjaxStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import driver.com.driverapp.utils.CallBack;
 import driver.com.driverapp.utils.DataController;
@@ -60,32 +70,18 @@ public class MainActivity extends ActionBarActivity {
         driver_full_name = (TextView)findViewById(R.id.driver_full_name);
         cab_number = (TextView) findViewById(R.id.cab_number);
 
-       but.setOnClickListener(new View.OnClickListener() {
+        updateLocation();
+
+        but.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
             //   dc.loginRequest();
-               dc.monitoring(dc._latitude,dc._longitude,
-                       new CallBack() {
-                           @Override
-                           public void process(String o) {
-                               updateNotification();
-                           }
-                       },
-                        new CallBack() {
-                            @Override
-                            public void process(String o) {
-                                Toast toast3 = Toast.makeText(getApplicationContext(), "Pizda Staus :" + dc.status, Toast.LENGTH_SHORT);
-                                toast3.show();
-                            }
-                        });
+
 
            }
        });
 
-        if(dc.enterByMain == true) getDataFromServer();
-
-        //driver_full_name.setText(SaveSharedPrefrances.getNumber(MainActivity.this));
-        //cab_number.setText("cub number :"+SaveSharedPrefrances.getPassword(MainActivity.this));
+        if(dc.enterByMain == true) getDataFromServer();;
 
         driver_full_name.setText(dc.driverFullName);
         cab_number.setText("cub number :"+dc.cabNumber);
@@ -99,6 +95,50 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public  void updateLocation()
+    {
+
+        final Handler handler = new Handler();
+        Timer    timer = new Timer();
+
+        TimerTask doAsynchronousTask = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @SuppressWarnings("unchecked")
+                    public void run() {
+                        try {
+                          //  "Your function call  ";
+                            dc.monitoring(dc._latitude,dc._longitude,
+                                    new CallBack() {
+                                        @Override
+                                        public void process(String o) {
+                                            updateNotification();
+                                        }
+                                    },
+                                    new CallBack() {
+                                        @Override
+                                        public void process(String o) {
+                                            Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
+                                            toast3.show();
+                                        }
+                                    });
+
+
+                        }
+                        catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(doAsynchronousTask, 5000, 60000);
+
+
+    }
+
     public void getDataFromServer(){
 
         dc.loginRequest(SaveSharedPrefrances.getNumber(MainActivity.this),
@@ -108,13 +148,13 @@ public class MainActivity extends ActionBarActivity {
                     public void process(String o) {
 
                         driver_full_name.setText(dc.driverFullName);
-                        cab_number.setText("cub number :"+dc.cabNumber);
+                        cab_number.setText("cub number :" + dc.cabNumber);
                     }
                 },
                 new CallBack() {
                     @Override
                     public void process(String o) {
-                        Toast toast3 = Toast.makeText(getApplicationContext(), "Pizda Staus :" + dc.status, Toast.LENGTH_SHORT);
+                        Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
                         toast3.show();
                     }
                 }
@@ -125,11 +165,11 @@ public class MainActivity extends ActionBarActivity {
         if(dc.saveStatus !=null){
             String flag = "saved";
             if(dc.saveStatus.equals(flag)){
-                Toast toast = Toast.makeText(getApplicationContext(),"The data was saved",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(),"Location updated",Toast.LENGTH_SHORT);
                 toast.show();
             }
             else{
-                Toast toast = Toast.makeText(getApplicationContext(),"Fail ! The data was not saved",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(),"Failure ! The data was not saved",Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
@@ -163,6 +203,33 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         setUpMap();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.item_logout:
+                Log.e("MENU","logout");
+                SaveSharedPrefrances.clearData(MainActivity.this);
+
+                dc.enterByMain = false;
+                dc.enterByLogin = true;
+
+                Intent intent = new Intent(MainActivity.this , LoginActivity.class);
+                startActivity(intent);
+                finish();
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
