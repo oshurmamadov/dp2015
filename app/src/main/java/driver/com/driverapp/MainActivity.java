@@ -2,11 +2,13 @@ package driver.com.driverapp;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.provider.Settings;
 import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +58,8 @@ public class MainActivity extends ActionBarActivity {
     TextView driver_full_name ;
     TextView cab_number ;
 
+    ImageButton logoutButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,25 +71,25 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.title_bar);
 
-        but = (Button)findViewById(R.id.button);
+       // but = (Button)findViewById(R.id.button);
         driver_full_name = (TextView)findViewById(R.id.driver_full_name);
         cab_number = (TextView) findViewById(R.id.cab_number);
 
         updateLocation();
 
-        but.setOnClickListener(new View.OnClickListener() {
+       /* but.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
             //   dc.loginRequest();
 
 
            }
-       });
+       });*/
 
-        if(dc.enterByMain == true) getDataFromServer();;
+        if(dc.enterByMain == true) getDataFromServer();
 
         driver_full_name.setText(dc.driverFullName);
-        cab_number.setText("cub number :"+dc.cabNumber);
+        cab_number.setText("борт: "+dc.cabNumber);
 
 
         try {
@@ -93,6 +98,22 @@ public class MainActivity extends ActionBarActivity {
         catch(Exception e){
                  e.printStackTrace();
         }
+
+        logoutButton = (ImageButton) findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveSharedPrefrances.clearData(MainActivity.this);
+
+                dc.enterByMain = false;
+                dc.enterByLogin = true;
+
+                Intent intent = new Intent(MainActivity.this , LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     public  void updateLocation()
@@ -105,24 +126,27 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void run() {
                 handler.post(new Runnable() {
-                    @SuppressWarnings("unchecked")
+
                     public void run() {
                         try {
-                          //  "Your function call  ";
-                            dc.monitoring(dc._latitude,dc._longitude,
-                                    new CallBack() {
-                                        @Override
-                                        public void process(String o) {
-                                            updateNotification();
-                                        }
-                                    },
-                                    new CallBack() {
-                                        @Override
-                                        public void process(String o) {
-                                            Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
-                                            toast3.show();
-                                        }
-                                    });
+                           if( checkGeolocationService() )
+                           {
+                               dc.monitoring(dc._latitude, dc._longitude,
+                                       new CallBack() {
+                                           @Override
+                                           public void process(String o) {
+
+                                               updateNotification();
+                                           }
+                                       },
+                                       new CallBack() {
+                                           @Override
+                                           public void process(String o) {
+                                               Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
+                                               toast3.show();
+                                           }
+                                       });
+                           }
 
 
                         }
@@ -134,7 +158,7 @@ public class MainActivity extends ActionBarActivity {
                 });
             }
         };
-        timer.schedule(doAsynchronousTask, 5000, 60000);
+        timer.schedule(doAsynchronousTask, 25000, 60000);
 
 
     }
@@ -148,7 +172,7 @@ public class MainActivity extends ActionBarActivity {
                     public void process(String o) {
 
                         driver_full_name.setText(dc.driverFullName);
-                        cab_number.setText("cub number :" + dc.cabNumber);
+                        cab_number.setText("борт: " + dc.cabNumber);
                     }
                 },
                 new CallBack() {
@@ -182,6 +206,8 @@ public class MainActivity extends ActionBarActivity {
             gMap.setMyLocationEnabled(true);
             gMap.getUiSettings().setMyLocationButtonEnabled(false);
 
+            checkGeolocationService();
+
             gMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                 @Override
                 public void onMyLocationChange(Location location) {
@@ -199,6 +225,48 @@ public class MainActivity extends ActionBarActivity {
        }
     }
 
+    public boolean checkGeolocationService(){
+        LocationManager lm = null;
+        boolean gps_enabled = false,network_enabled = false , flag = true;
+        if(lm==null)
+            lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        try{
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        }catch(Exception ex){}
+        try{
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        }catch(Exception ex){}
+
+        if(!gps_enabled && !network_enabled){
+            flag = false;
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+           // dialog.setMessage(this.getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setTitle("Ошибка");
+            dialog.setMessage("Ну удалось определить Ваше местоположение. Пожалуйста включите GPS");
+            dialog.setPositiveButton("Настройки", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            dialog.show();
+
+        }
+        return flag;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -206,31 +274,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.item_logout:
-                Log.e("MENU","logout");
-                SaveSharedPrefrances.clearData(MainActivity.this);
-
-                dc.enterByMain = false;
-                dc.enterByLogin = true;
-
-                Intent intent = new Intent(MainActivity.this , LoginActivity.class);
-                startActivity(intent);
-                finish();
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
 
 }
