@@ -60,6 +60,11 @@ public class MainActivity extends ActionBarActivity {
 
     ImageButton logoutButton;
 
+
+    final Handler handler = new Handler();
+    Timer    timer = new Timer();
+    TimerTask doAsynchronousTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,50 +123,46 @@ public class MainActivity extends ActionBarActivity {
 
     public  void updateLocation()
     {
-
-        final Handler handler = new Handler();
-        Timer    timer = new Timer();
-
-        TimerTask doAsynchronousTask = new TimerTask() {
+        doAsynchronousTask = new TimerTask() {
             @Override
             public void run() {
-                handler.post(new Runnable() {
-
-                    public void run() {
-                        try {
-                           if( checkGeolocationService() )
-                           {
-                               dc.monitoring(dc._latitude, dc._longitude,
-                                       new CallBack() {
-                                           @Override
-                                           public void process(String o) {
-
-                                               updateNotification();
-                                           }
-                                       },
-                                       new CallBack() {
-                                           @Override
-                                           public void process(String o) {
-                                               Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
-                                               toast3.show();
-                                           }
-                                       });
-                           }
-
-
-                        }
-                        catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                handler.post(thread);
             }
         };
-        timer.schedule(doAsynchronousTask, 25000, 60000);
-
-
+        timer.schedule(doAsynchronousTask, 25000, 10000);
     }
+
+    Runnable thread = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                if( checkGeolocationService() )
+                {
+                    dc.monitoring(dc._latitude, dc._longitude,
+                            new CallBack() {
+                                @Override
+                                public void process(String o) {
+
+                                    updateNotification();
+                                }
+                            },
+                            new CallBack() {
+                                @Override
+                                public void process(String o) {
+                                    Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
+                                    toast3.show();
+                                }
+                            });
+                }
+
+
+            }
+            catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    };
 
     public void getDataFromServer(){
 
@@ -271,6 +272,14 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         setUpMap();
+    }
+
+    protected void onStop() {
+        super.onStop();
+        Log.e("Tracking", "onStop");
+        handler.removeCallbacks(thread);
+        if(doAsynchronousTask != null) doAsynchronousTask.cancel();
+
     }
 
 
