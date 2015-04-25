@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="customBlueLight">#6FD9FF</color>
+    <color name="loginPressed">#D666DF</color>
+    <color name="loginColor">#7B0794</color>
+    <color name="mainColor">#7B0794</color>
+</resources>
