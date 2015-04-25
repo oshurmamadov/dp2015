@@ -60,7 +60,6 @@ public class MainActivity extends ActionBarActivity {
 
     ImageButton logoutButton;
 
-
     final Handler handler = new Handler();
     Timer    timer = new Timer();
     TimerTask doAsynchronousTask;
@@ -76,20 +75,11 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.title_bar);
 
-       // but = (Button)findViewById(R.id.button);
         driver_full_name = (TextView)findViewById(R.id.driver_full_name);
         cab_number = (TextView) findViewById(R.id.cab_number);
 
         updateLocation();
 
-       /* but.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-            //   dc.loginRequest();
-
-
-           }
-       });*/
 
         if(dc.enterByMain == true) getDataFromServer();
 
@@ -129,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
                 handler.post(thread);
             }
         };
-        timer.schedule(doAsynchronousTask, 25000, 10000);
+        timer.schedule(doAsynchronousTask, 25000, 60000);
     }
 
     Runnable thread = new Runnable() {
@@ -149,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
                             new CallBack() {
                                 @Override
                                 public void process(String o) {
-                                    Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
+                                    Toast toast3 = Toast.makeText(getApplicationContext(), "Ошибка :" + dc.status, Toast.LENGTH_SHORT);
                                     toast3.show();
                                 }
                             });
@@ -179,7 +169,7 @@ public class MainActivity extends ActionBarActivity {
                 new CallBack() {
                     @Override
                     public void process(String o) {
-                        Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
+                        Toast toast3 = Toast.makeText(getApplicationContext(), "Ошибка :" + dc.status, Toast.LENGTH_SHORT);
                         toast3.show();
                     }
                 }
@@ -190,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
         if(dc.saveStatus !=null){
             String flag = "saved";
             if(dc.saveStatus.equals(flag)){
-                Toast toast = Toast.makeText(getApplicationContext(),"Location updated",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(),"Местоположение обновлено",Toast.LENGTH_SHORT);
                 toast.show();
             }
             else{

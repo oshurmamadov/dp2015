@@ -1,5 +1,6 @@
 package driver.com.driverapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
@@ -24,6 +25,7 @@ public class LoginActivity extends ActionBarActivity {
     private DataController dc;
     private AQuery aq;
 
+    ProgressDialog mProgressDialog ;
     EditText number;
     EditText password;
     Button connectBtn;
@@ -46,19 +48,21 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v)
             {
                 //dc.loginRequest(number.getText().toString(),password.getText().toString());
+              //  mProgressDialog = ProgressDialog.show(LoginActivity.this, "Подождите", "Загружаются данные...", true);
                 saveData();
                 dc.loginRequest(SaveSharedPrefrances.getNumber(LoginActivity.this),
                                 SaveSharedPrefrances.getPassword(LoginActivity.this),
                                 new CallBack() {
                                     @Override
                                     public void process(String o) {
+                                      //  mProgressDialog.dismiss();
                                         beginTracking();
                                     }
                                 },
                                 new CallBack() {
                                     @Override
                                     public void process(String o) {
-                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Error Status :" + dc.status, Toast.LENGTH_SHORT);
+                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Ошибка:" + dc.status, Toast.LENGTH_SHORT);
                                         toast3.show();
                                     }
                                 }
@@ -91,7 +95,7 @@ public class LoginActivity extends ActionBarActivity {
                 finish();
             } else
             {
-                Toast toast = Toast.makeText(getApplicationContext(), "Error :" + dc.status, Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), "Ошибка :" + dc.status, Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
