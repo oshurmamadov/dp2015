@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
@@ -29,10 +31,28 @@ public class LoginActivity extends ActionBarActivity {
     EditText number;
     EditText password;
     Button connectBtn;
+
+    TextView driver_full_name ;
+    TextView cab_number ;
+    ImageButton logoutButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        getSupportActionBar().setDisplayOptions(android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.title_bar);
+
+        driver_full_name = (TextView)findViewById(R.id.driver_full_name);
+        cab_number = (TextView) findViewById(R.id.cab_number);
+        logoutButton = (ImageButton) findViewById(R.id.logout_button);
+
+        driver_full_name.setText("Аутентификация");
+
+        cab_number.setVisibility(View.INVISIBLE);
+        logoutButton.setVisibility(View.INVISIBLE);
 
         dc = DataController.getInstance(this);
         aq = new AQuery(getApplicationContext());

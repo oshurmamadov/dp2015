@@ -5,4 +5,24 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="CustomTheme" parent="Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar"
+        parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+
+        <!-- Support library compatibility -->
+        <item name="background">@color/mainColor</item>
+        <item name="android:popupBackground">@color/mainColor</item>
+    </style>
+
+    <style name="EditTextCustomHolo" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/customedittexttheme_edit_text_holo_light</item>
+        <item name="android:textColor">#ffffff</item>
+    </style>
+
 </resources>

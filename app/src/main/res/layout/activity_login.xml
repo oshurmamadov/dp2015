@@ -19,7 +19,9 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
-        android:layout_above="@+id/password_field"/>
+        android:layout_above="@+id/password_field"
+        android:textColor="#ffffffff"
+        style="@style/EditTextCustomHolo" />
 
     <EditText
         android:text="test500"
@@ -30,7 +32,10 @@
         android:id="@+id/password_field"
         android:layout_above="@+id/connectBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp" />
+        android:layout_marginBottom="40dp"
+        android:textColor="#ffffffff"
+        style="@style/EditTextCustomHolo"
+        />
 
     <Button
         android:layout_width="150dp"
@@ -44,8 +49,8 @@
         android:paddingLeft="5dp" />
 
     <ImageView
-        android:layout_width="300dp"
-        android:layout_height="310dp"
+        android:layout_width="310dp"
+        android:layout_height="280dp"
         android:background="@drawable/ssplash"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
