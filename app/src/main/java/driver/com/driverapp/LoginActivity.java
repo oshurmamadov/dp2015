@@ -34,7 +34,7 @@ public class LoginActivity extends ActionBarActivity {
 
     TextView driver_full_name ;
     TextView cab_number ;
-    ImageButton logoutButton;
+    Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class LoginActivity extends ActionBarActivity {
 
         driver_full_name = (TextView)findViewById(R.id.driver_full_name);
         cab_number = (TextView) findViewById(R.id.cab_number);
-        logoutButton = (ImageButton) findViewById(R.id.logout_button);
+        logoutButton = (Button) findViewById(R.id.logout_button);
 
         driver_full_name.setText("Аутентификация");
 

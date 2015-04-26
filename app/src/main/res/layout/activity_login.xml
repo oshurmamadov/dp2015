@@ -55,4 +55,22 @@
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/imageView2"
+        android:background="@drawable/user"
+        android:layout_alignBottom="@+id/number_field"
+        android:layout_toLeftOf="@+id/number_field"
+        android:layout_toStartOf="@+id/number_field" />
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:id="@+id/imageView3"
+        android:background="@drawable/lock"
+        android:layout_alignBottom="@+id/password_field"
+        android:layout_toLeftOf="@+id/password_field"
+        android:layout_toStartOf="@+id/password_field" />
 </RelativeLayout>

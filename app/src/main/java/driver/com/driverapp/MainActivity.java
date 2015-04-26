@@ -58,7 +58,7 @@ public class MainActivity extends ActionBarActivity {
     TextView driver_full_name ;
     TextView cab_number ;
 
-    ImageButton logoutButton;
+    Button logoutButton;
 
     final Handler handler = new Handler();
     Timer    timer = new Timer();
@@ -94,7 +94,7 @@ public class MainActivity extends ActionBarActivity {
                  e.printStackTrace();
         }
 
-        logoutButton = (ImageButton) findViewById(R.id.logout_button);
+        logoutButton = (Button) findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

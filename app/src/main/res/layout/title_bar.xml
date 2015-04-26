@@ -27,11 +27,11 @@
         android:paddingBottom="1.8dp"
         android:layout_marginLeft="10dp" />
 
-    <ImageButton
+    <Button
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:id="@+id/logout_button"
-        android:background="@drawable/logout"
+        android:background="@drawable/logout_action"
         android:layout_alignTop="@+id/driver_full_name"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
