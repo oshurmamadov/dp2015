@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="#AE27B7"
     tools:context="driver.com.driverapp.LoginActivity">
@@ -34,11 +33,10 @@
         android:layout_marginBottom="40dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Подключится"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:id="@+id/connectBtn"
-        android:background="@color/mainColor"
+        android:background="@drawable/login_button_press"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffffff"
@@ -47,7 +45,7 @@
 
     <ImageView
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="310dp"
         android:background="@drawable/ssplash"
         android:id="@+id/imageView"
         android:layout_alignParentTop="true"
