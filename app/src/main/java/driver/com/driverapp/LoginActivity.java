@@ -68,14 +68,14 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v)
             {
                 //dc.loginRequest(number.getText().toString(),password.getText().toString());
-              //  mProgressDialog = ProgressDialog.show(LoginActivity.this, "Подождите", "Загружаются данные...", true);
+                mProgressDialog = ProgressDialog.show(LoginActivity.this, "Подождите", "Загружается карта...", true);
                 saveData();
                 dc.loginRequest(SaveSharedPrefrances.getNumber(LoginActivity.this),
                                 SaveSharedPrefrances.getPassword(LoginActivity.this),
                                 new CallBack() {
                                     @Override
                                     public void process(String o) {
-                                      //  mProgressDialog.dismiss();
+                                        mProgressDialog.dismiss();
                                         beginTracking();
                                     }
                                 },

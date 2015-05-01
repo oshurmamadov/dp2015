@@ -196,7 +196,7 @@ public class MainActivity extends ActionBarActivity {
             gMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.mapFragment)).getMap();
             gMap.setMyLocationEnabled(true);
             gMap.getUiSettings().setMyLocationButtonEnabled(false);
-                
+            //gMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
             checkGeolocationService();
 
