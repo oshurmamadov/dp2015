@@ -104,7 +104,7 @@ public class DataController {
 
                                 saveStatus  = saveJSon.getString("status");
 
-                                Log.e("Tracking","saved request status :"+saveStatus);
+                                //Log.e("Tracking","saved request status :"+saveStatus);
 
                             } catch (JSONException e) {
                                 Log.e("Tracking", "Catched JSONException. result was: " + o);

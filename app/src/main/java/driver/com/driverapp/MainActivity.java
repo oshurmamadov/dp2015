@@ -69,6 +69,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.e("Tracking", "onCreate");
+
         aq = new AQuery(getApplicationContext());
         dc = DataController.getInstance(this);
 
@@ -78,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
         driver_full_name = (TextView)findViewById(R.id.driver_full_name);
         cab_number = (TextView) findViewById(R.id.cab_number);
 
-        updateLocation();
+       // updateLocation();
 
 
         if(dc.enterByMain == true) getDataFromServer();
@@ -264,17 +266,34 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onStart(){
+        super.onStart();
+        Log.e("Tracking", "onStart");
+
+        if(handler != null )handler.removeCallbacks(thread);
+        if(doAsynchronousTask != null )doAsynchronousTask.cancel();
+        updateLocation();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.e("Tracking", "onPause");
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         Log.e("Tracking", "onResume");
         setUpMap();
-    }
 
+    }
+    @Override
     protected void onStop() {
         super.onStop();
         Log.e("Tracking", "onStop");
-        handler.removeCallbacks(thread);
-        if(doAsynchronousTask != null) doAsynchronousTask.cancel();
+        //handler.removeCallbacks(thread);
+        //doAsynchronousTask.cancel();
 
     }
 
@@ -282,6 +301,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onDestroy(){
         super.onDestroy();
         Log.e("Tracking", "onDestroy");
+        handler.removeCallbacks(thread);
+        doAsynchronousTask.cancel();
     }
 
 
