@@ -119,7 +119,8 @@ public class MainActivity extends ActionBarActivity {
                 handler.post(thread);
             }
         };
-        timer.schedule(doAsynchronousTask, 25000, 60000);
+        //timer.schedule(doAsynchronousTask, 25000, 60000);
+        timer.schedule(doAsynchronousTask, 5000, 10000);
     }
 
     Runnable thread = new Runnable() {
@@ -164,6 +165,8 @@ public class MainActivity extends ActionBarActivity {
 
                         driver_full_name.setText(dc.driverFullName);
                         cab_number.setText("борт: " + dc.cabNumber);
+
+                        Log.e("Tracking", "get driver full name and cab number from server");
                     }
                 },
                 new CallBack() {
@@ -180,6 +183,7 @@ public class MainActivity extends ActionBarActivity {
         if(dc.saveStatus !=null){
             String flag = "saved";
             if(dc.saveStatus.equals(flag)){
+                Log.e("Tracking", "Location updated");
                 Toast toast = Toast.makeText(getApplicationContext(),"Местоположение обновлено",Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -262,6 +266,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("Tracking", "onResume");
         setUpMap();
     }
 
@@ -273,7 +278,11 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.e("Tracking", "onDestroy");
+    }
 
 
 }

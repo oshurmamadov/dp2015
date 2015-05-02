@@ -67,14 +67,14 @@ public class DataController {
                                 driverFullName = loginJSon.getString("driver_full_name");
                                 cabNumber      = loginJSon.getString("cab_number");
 
-                                Log.e("Jush",status);
-                                Log.e("Jush",loginJSon.getString("cab_number"));
-                                Log.e("Jush",loginJSon.getString("driver_full_name"));
+                                Log.e("Tracking","login :" + status);
+                                Log.e("Tracking","login :" + loginJSon.getString("cab_number"));
+                                Log.e("Tracking","login :" + loginJSon.getString("driver_full_name"));
 
 
 
                             } catch (JSONException e) {
-                                Log.e("Jush", "Catched JSONException. result was: " + o);
+                                Log.e("Tracking", "Catched JSONException. result was: " + o);
                             }
                         }
                         success.process(o);
@@ -104,10 +104,10 @@ public class DataController {
 
                                 saveStatus  = saveJSon.getString("status");
 
-                                Log.e("Jush",saveStatus);
+                                Log.e("Tracking","saved request status :"+saveStatus);
 
                             } catch (JSONException e) {
-                                Log.e("Jush", "Catched JSONException. result was: " + o);
+                                Log.e("Tracking", "Catched JSONException. result was: " + o);
                             }
                         }
                         success.process(o);
