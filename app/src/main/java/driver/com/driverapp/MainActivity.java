@@ -214,7 +214,7 @@ public class MainActivity extends ActionBarActivity {
                     dc._longitude = location.getLongitude();
 
                     gMap.clear();
-                    gMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("You are here!").snippet("Consider yourself located"));
+                    gMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("Текущее местоположение"));
                     gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),12.0f ) );
 
                 }
