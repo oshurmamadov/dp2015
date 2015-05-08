@@ -21,7 +21,7 @@
     </style>
 
     <style name="EditTextCustomHolo" parent="android:Widget.EditText">
-        <item name="android:background">@drawable/customedittexttheme_edit_text_holo_light</item>
+        <item name="android:background">@drawable/apptheme_edit_text_holo_light</item>
         <item name="android:textColor">#ffffff</item>
     </style>
 
