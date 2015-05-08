@@ -2,40 +2,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+
     android:background="#AE27B7"
     tools:context="driver.com.driverapp.LoginActivity">
 
-
-    <EditText
-        android:text="0558882233"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/number_field"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:layout_above="@+id/password_field"
-        android:textColor="#ffffffff"
-        style="@style/EditTextCustomHolo" />
+        android:id="@+id/mainL"
+        android:layout_above="@+id/centreL"
+        android:layout_alignParentTop="true">
 
-    <EditText
-        android:text="test500"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/password_field"
+        <ImageView
+            android:layout_width="310dp"
+            android:layout_height="250dp"
+            android:background="@drawable/rsz_2ssplash"
+            android:id="@+id/imageView"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:id="@+id/centreL"
+        android:background="#d234dd"
         android:layout_above="@+id/connectBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
-        android:textColor="#ffffffff"
-        style="@style/EditTextCustomHolo"
-        />
+        android:layout_marginBottom="10dp">
+
+
+        <EditText
+            android:text="0558882233"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/number_field"
+            android:layout_above="@+id/line"
+            android:layout_centerHorizontal="true"
+            android:textColor="#ffffffff"
+            style="@style/EditTextCustomHolo" />
+
+        <EditText
+            android:text="test500"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/password_field"
+            android:layout_below="@+id/line"
+            android:textColor="#ffffffff"
+            style="@style/EditTextCustomHolo"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/imageView2"
+            android:background="@drawable/user"
+            android:layout_alignBottom="@+id/number_field"
+            android:layout_toLeftOf="@+id/number_field"
+            android:layout_toStartOf="@+id/number_field" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:id="@+id/imageView3"
+            android:background="@drawable/lock"
+            android:layout_alignBottom="@+id/password_field"
+            android:layout_toLeftOf="@+id/password_field"
+            android:layout_toStartOf="@+id/password_field" />
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/line"
+            android:background="@drawable/line"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" />
+
+    </RelativeLayout>
+
+
 
     <Button
         android:layout_width="150dp"
@@ -46,31 +97,11 @@
         android:layout_centerHorizontal="true"
         android:textColor="#ffffffff"
         android:paddingRight="5dp"
-        android:paddingLeft="5dp" />
+        android:paddingLeft="5dp"
+        android:layout_marginBottom="10dp" />
 
-    <ImageView
-        android:layout_width="310dp"
-        android:layout_height="280dp"
-        android:background="@drawable/ssplash"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/imageView2"
-        android:background="@drawable/user"
-        android:layout_alignBottom="@+id/number_field"
-        android:layout_toLeftOf="@+id/number_field"
-        android:layout_toStartOf="@+id/number_field" />
 
-    <ImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:id="@+id/imageView3"
-        android:background="@drawable/lock"
-        android:layout_alignBottom="@+id/password_field"
-        android:layout_toLeftOf="@+id/password_field"
-        android:layout_toStartOf="@+id/password_field" />
+
+
 </RelativeLayout>
