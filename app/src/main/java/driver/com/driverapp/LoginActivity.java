@@ -115,7 +115,10 @@ public class LoginActivity extends ActionBarActivity {
                 finish();
             } else
             {
-                Toast toast = Toast.makeText(getApplicationContext(), "Ошибка :" + dc.status, Toast.LENGTH_SHORT);
+                SaveSharedPrefrances.setNumber(this,"");
+                SaveSharedPrefrances.setPassword(this,"");
+
+                Toast toast = Toast.makeText(getApplicationContext(), "Введены некорректные данные", Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
