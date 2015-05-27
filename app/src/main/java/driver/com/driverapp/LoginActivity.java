@@ -82,7 +82,13 @@ public class LoginActivity extends ActionBarActivity {
                                 new CallBack() {
                                     @Override
                                     public void process(String o) {
-                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Ошибка:" + dc.status, Toast.LENGTH_SHORT);
+
+                                        SaveSharedPrefrances.setNumber(LoginActivity.this,"");
+                                        SaveSharedPrefrances.setPassword(LoginActivity.this,"");
+
+                                        mProgressDialog.dismiss();
+
+                                        Toast toast3 = Toast.makeText(getApplicationContext(), "Ошибка подключения к сети", Toast.LENGTH_SHORT);
                                         toast3.show();
                                     }
                                 }
